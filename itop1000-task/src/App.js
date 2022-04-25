@@ -4,8 +4,8 @@ import Header from "./components/Header";
 import Convert from "./components/Convert";
 import Converting from "./components/Converting";
 
-const bankUrl =
-  "http://api.exchangeratesapi.io/v1/latest?access_key=1ca507435cab403be0f7a76fe78a38f2&format=1";
+const apiUrl = "http://api.exchangeratesapi.io/v1";
+const accessKey = "1ca507435cab403be0f7a76fe78a38f2";
 
 function App() {
   const [error, setError] = useState(null);
@@ -49,7 +49,9 @@ function App() {
   }
 
   useEffect(() => {
-    fetch(bankUrl)
+    const url = getApiUrl('/latest', "format=1");
+
+    fetch(url)
       .then((res) => res.json())
       .then(
         (data) => {
@@ -70,8 +72,10 @@ function App() {
   }, []);
 
   useEffect(() => {
+ 
     if (fromCurrency != null && toCurrency != null) {
-      fetch(`${bankUrl}?base=${fromCurrency}&symbols=${toCurrency}`)
+      const url = getApiUrl('/latest', `base=${fromCurrency}&symbols=${toCurrency}`)
+      fetch(url)
         .then((res) => res.json())
         .then((data) => setExchangeRate(data.rates[toCurrency]));
     }
@@ -97,6 +101,9 @@ function App() {
     setLeftAmount(e.target.value / exRate);
   }
 
+  function getApiUrl(path, paramsString) {
+    return apiUrl + path + "?" + paramsString + "&access_key=" + accessKey;
+  }
   if (error) {
     return <div>Помилка: {error.message}</div>;
   } else if (!isLoaded) {
