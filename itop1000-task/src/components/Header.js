@@ -4,7 +4,6 @@ import "materialize-css/dist/css/materialize.min.css";
 export default function Header(props) {
   const uahUsd = (props.data.rates.UAH / props.data.rates.USD).toFixed(4);
   const uahEur = props.data.rates.UAH.toFixed(4);
-  console.log("Header : uahUsd & uahEur=", uahUsd, uahEur);
 
   return (
     <>
